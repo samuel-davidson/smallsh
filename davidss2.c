@@ -2,7 +2,7 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (lines 23-29, 42-66)
+    (lines 26-32, 54-78)
 2. 
 3.
 4.
@@ -14,6 +14,9 @@ Citations:
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
+#include <unistd.h>
+
 
 #define INPUT_LENGTH     2048
 #define MAX_ARGS		 512
@@ -34,6 +37,15 @@ int main() {
 	while(true)
 	{
 		curr_command = parse_input();
+
+		if (strcmp(curr_command->argv[0], "exit") == 0){
+			// exit command
+			// kills any other process
+			pid_t groupID = getpgrp();
+			killpg(groupID, SIGKILL);
+			return 0;
+		}
+
 
 	}
 	return EXIT_SUCCESS;
