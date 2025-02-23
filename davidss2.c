@@ -44,7 +44,7 @@ int main() {
 			// kills any other process
 			pid_t groupID = getpgrp();
 			killpg(groupID, SIGKILL);
-			return 0;
+			return EXIT_SUCCESS;
 		}
 	}
 	return EXIT_SUCCESS;
