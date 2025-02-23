@@ -2,7 +2,7 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (lines 26-32, 54-78)
+    (lines 26-32, 53-77)
 2. 
 3.
 4.
@@ -38,6 +38,7 @@ int main() {
 	{
 		curr_command = parse_input();
 
+		// HANDLE BUILT IN COMMANDS
 		if (strcmp(curr_command->argv[0], "exit") == 0){
 			// exit command
 			// kills any other process
@@ -45,8 +46,6 @@ int main() {
 			killpg(groupID, SIGKILL);
 			return 0;
 		}
-
-
 	}
 	return EXIT_SUCCESS;
 }
