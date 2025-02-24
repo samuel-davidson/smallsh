@@ -2,11 +2,12 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (Lines 30-36, 92-121)
+    (Lines 32-38, 98-127)
 2. Forking and waiting for child process adapted from Module 6,
-	Exploration 3 (Process API - Monitoring Child Processes).
-	(Lines 69-87)
-3.
+	Exploration 3 (Process API - Monitoring Child Processes)
+	(Code example #3). (Lines 75-93)
+3. Status display adapted from Module 6, Exploration 3 (Process API
+	- Monitoring Child Processes) (Code example #4). (Lines 129-143)
 4.
 5.
 6.
