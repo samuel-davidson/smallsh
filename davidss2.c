@@ -78,7 +78,6 @@ int main() {
 				printf("%s: no such command\n", curr_command->argv[0]);
 				fflush(stdout);
 				exit(1);
-				break;
 			} else if (pid > 0) {
 			// parent process executes this
 				waitpid(pid, &childStatus, 0);
