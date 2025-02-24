@@ -8,10 +8,10 @@ Small Shell
 - Provide a prompt for running commands
 - Handle blank lines and comments, which are lines beginning with the # character
 - Execute other commands by creating new processes using a function from the exec() family of functions
+- Execute 3 commands exit, cd, and status via code built into the shell
 
 ### Implemented but Needs Work:
 
-- Execute 3 commands exit (DONE), cd (DONE), and status via code built into the shell
 
 ### Needs to be Implemented:
 
