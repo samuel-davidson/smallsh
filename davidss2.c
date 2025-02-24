@@ -2,10 +2,10 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (Lines 30-36, 91-120)
+    (Lines 30-36, 92-121)
 2. Forking and waiting for child process adapted from Module 6,
 	Exploration 3 (Process API - Monitoring Child Processes).
-	(Lines 68-86)
+	(Lines 69-87)
 3.
 4.
 5.
@@ -63,6 +63,7 @@ int main() {
 				// change the directory
 				if (chdir(curr_command->argv[1]) == -1) {
 					printf("%s: no such file or directory\n", curr_command->argv[1]);
+					fflush(stdout);
 				} else { continue; }
 			}
 		} else {
@@ -70,6 +71,7 @@ int main() {
 			pid_t pid = fork();
 			if (pid == -1) {
 				perror("fork() failed!"); 
+				fflush(stdout);
 				exit(EXIT_FAILURE); 
 				break;
 			} else if (pid == 0) {
