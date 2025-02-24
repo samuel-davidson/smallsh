@@ -48,7 +48,7 @@ int main() {
 			// handle comments
 		else if (strcmp(curr_command->argv[0], "exit") == 0) {
 			// exit command
-			// kills any other process via parent ID
+			// kills any other process via group ID
 			pid_t groupID = getpgrp();
 			killpg(groupID, SIGKILL);
 			return EXIT_SUCCESS;
