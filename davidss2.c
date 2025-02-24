@@ -57,7 +57,7 @@ int main() {
 			// check if cd is alone in input
 			if (curr_command->argc == 1) {
 				// go to home env
-				char * home = getenv("HOME");
+				char * home = getenv("SHELL");
 				chdir(home);
 			} else {
 				// change the directory
