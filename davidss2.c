@@ -26,6 +26,7 @@ Citations:
 #define MAX_ARGS		 512
 
 struct command_line *parse_input();
+void status_print(int exit_val);
 
 struct command_line {
 	char *argv[MAX_ARGS + 1];
@@ -37,6 +38,7 @@ struct command_line {
 
 int main() {
 	struct command_line *curr_command;
+	int childStatus;
 
 	while(true) {
 		curr_command = parse_input();
@@ -66,8 +68,11 @@ int main() {
 					fflush(stdout);
 				} else { continue; }
 			}
+		} else if (strcmp(curr_command->argv[0], "status") == 0) { 
+			// status command
+				status_print(childStatus);
 		} else {
-			int childStatus;
+			//int childStatus;
 			pid_t pid = fork();
 			if (pid == -1) {
 				perror("fork() failed!"); 
@@ -118,4 +123,20 @@ struct command_line *parse_input() {
 	// debugging print statement
 	// printf("CURRENT COMMAND = %s %s\n", curr_command->argv[0], curr_command->argv[1]);
 	return curr_command;
+}
+
+void status_print(int exit_val) {
+	if(WIFEXITED(exit_val)) {
+		// normal termination
+		printf("exit value %d\n", WEXITSTATUS(exit_val));
+		fflush(stdout);
+	} else if (WIFSIGNALED(exit_val)) {
+		// abnormal termination
+		printf("terminated by signal %d\n", WTERMSIG(exit_val));
+		fflush(stdout);
+	} else {
+		// error
+		printf("error determining exit value\n");
+		fflush(stdout);
+	}
 }
