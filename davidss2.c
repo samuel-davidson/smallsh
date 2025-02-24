@@ -44,7 +44,7 @@ int main() {
 		// HANDLE BUILT IN COMMANDS
 		if (curr_command->argv[0] == NULL) { continue; }
 			// handle empty lines 
-		else if ((strcmp(curr_command->argv[0], "#") == 0)) { continue; }
+		else if (strncmp(curr_command->argv[0], "#", 1) == 0) { continue; }
 			// handle comments
 		else if (strcmp(curr_command->argv[0], "exit") == 0) {
 			// exit command
