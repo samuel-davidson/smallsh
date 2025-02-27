@@ -2,12 +2,12 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (Lines 34-40, 88-117)
+    (Lines 34-40, 88-112)
 2. Forking and waiting for child process adapted from Module 6,
 	Exploration 3 (Process API - Monitoring Child Processes)
 	(Code example #3). (Lines 65-83)
 3. Status display adapted from Module 6, Exploration 3 (Process API
-	- Monitoring Child Processes) (Code example #4). (Lines 125-139)
+	- Monitoring Child Processes) (Code example #4). (Lines 120-134)
 4.
 5.
 6.
@@ -94,9 +94,6 @@ struct command_line *parse_input() {
 	fflush(stdout);
 	fgets(input, INPUT_LENGTH, stdin);
 
-	// debugging print statement
-	// printf("INPUT = %s", input);
-
 	// Tokenize the input
 	char *token = strtok(input, " \n");
 	while(token){
@@ -111,8 +108,6 @@ struct command_line *parse_input() {
 		}
 		token=strtok(NULL," \n");
 	}
-	// debugging print statement
-	// printf("CURRENT COMMAND = %s %s\n", curr_command->argv[0], curr_command->argv[1]);
 	return curr_command;
 }
 
