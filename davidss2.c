@@ -2,12 +2,12 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (Lines 32-38, 98-127)
+    (Lines 33-39, 88-177)
 2. Forking and waiting for child process adapted from Module 6,
 	Exploration 3 (Process API - Monitoring Child Processes)
-	(Code example #3). (Lines 75-93)
+	(Code example #3). (Lines 65-83)
 3. Status display adapted from Module 6, Exploration 3 (Process API
-	- Monitoring Child Processes) (Code example #4). (Lines 129-143)
+	- Monitoring Child Processes) (Code example #4). (Lines 119-133)
 4.
 5.
 6.
@@ -28,6 +28,7 @@ Citations:
 
 struct command_line *parse_input();
 void handle_status(int childStatus);
+void handle_cd(struct command_line *curr_command);
 
 struct command_line {
 	char *argv[MAX_ARGS + 1];
@@ -57,18 +58,7 @@ int main() {
 			return EXIT_SUCCESS;
 		} else if (strcmp(curr_command->argv[0], "cd") == 0) {
 			// cd command
-			// check if cd is alone in input
-			if (curr_command->argc == 1) {
-				// go to home env
-				char * home = getenv("HOME");
-				chdir(home);
-			} else {
-				// change the directory
-				if (chdir(curr_command->argv[1]) == -1) {
-					printf("%s: no such file or directory\n", curr_command->argv[1]);
-					fflush(stdout);
-				} else { continue; }
-			}
+			handle_cd(curr_command);
 		} else if (strcmp(curr_command->argv[0], "status") == 0) { 
 			// status command
 			handle_status(childStatus);
@@ -139,5 +129,20 @@ void handle_status(int childStatus) {
 		// error
 		printf("error determining exit value\n");
 		fflush(stdout);
+	}
+}
+
+void handle_cd(struct command_line *curr_command) {
+	// check if cd is alone in input
+	if (curr_command->argc == 1) {
+		// go to home env
+		char * home = getenv("HOME");
+		chdir(home);
+	} else {
+		// change the directory
+		if (chdir(curr_command->argv[1]) == -1) {
+			printf("%s: no such file or directory\n", curr_command->argv[1]);
+			fflush(stdout);
+		}
 	}
 }
