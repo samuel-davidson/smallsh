@@ -2,12 +2,12 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (Lines 33-39, 88-177)
+    (Lines 34-40, 88-117)
 2. Forking and waiting for child process adapted from Module 6,
 	Exploration 3 (Process API - Monitoring Child Processes)
 	(Code example #3). (Lines 65-83)
 3. Status display adapted from Module 6, Exploration 3 (Process API
-	- Monitoring Child Processes) (Code example #4). (Lines 119-133)
+	- Monitoring Child Processes) (Code example #4). (Lines 125-139)
 4.
 5.
 6.
@@ -27,6 +27,7 @@ Citations:
 #define MAX_ARGS		 512
 
 struct command_line *parse_input();
+int handle_exit(pid_t groupID);
 void handle_status(int childStatus);
 void handle_cd(struct command_line *curr_command);
 
@@ -54,8 +55,7 @@ int main() {
 			// exit command
 			// kills any other process via group ID
 			pid_t groupID = getpgrp();
-			killpg(groupID, SIGKILL);
-			return EXIT_SUCCESS;
+			handle_exit(groupID);
 		} else if (strcmp(curr_command->argv[0], "cd") == 0) {
 			// cd command
 			handle_cd(curr_command);
@@ -114,6 +114,12 @@ struct command_line *parse_input() {
 	// debugging print statement
 	// printf("CURRENT COMMAND = %s %s\n", curr_command->argv[0], curr_command->argv[1]);
 	return curr_command;
+}
+
+int handle_exit(pid_t groupID) {
+	// kills any other process via group ID
+	killpg(groupID, SIGKILL);
+	return EXIT_SUCCESS;
 }
 
 void handle_status(int childStatus) {
