@@ -2,12 +2,12 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (Lines 31-37, 109-138)
+    (Lines 32-38, 98-127)
 2. Forking and waiting for child process adapted from Module 6,
 	Exploration 3 (Process API - Monitoring Child Processes)
-	(Code example #3). (Lines 86-104)
+	(Code example #3). (Lines 75-93)
 3. Status display adapted from Module 6, Exploration 3 (Process API
-	- Monitoring Child Processes) (Code example #4). (Lines 73-85)
+	- Monitoring Child Processes) (Code example #4). (Lines 129-143)
 4.
 5.
 6.
@@ -27,6 +27,7 @@ Citations:
 #define MAX_ARGS		 512
 
 struct command_line *parse_input();
+void handle_status(int childStatus);
 
 struct command_line {
 	char *argv[MAX_ARGS + 1];
@@ -70,19 +71,7 @@ int main() {
 			}
 		} else if (strcmp(curr_command->argv[0], "status") == 0) { 
 			// status command
-			if(WIFEXITED(childStatus)) {
-				// normal termination
-				printf("exit value %d\n", WEXITSTATUS(childStatus));
-				fflush(stdout);
-			} else if (WIFSIGNALED(childStatus)) {
-				// abnormal termination
-				printf("terminated by signal %d\n", WTERMSIG(childStatus));
-				fflush(stdout);
-			} else {
-				// error
-				printf("error determining exit value\n");
-				fflush(stdout);
-			}
+			handle_status(childStatus);
 		} else {
 			//int childStatus;
 			pid_t pid = fork();
@@ -135,4 +124,20 @@ struct command_line *parse_input() {
 	// debugging print statement
 	// printf("CURRENT COMMAND = %s %s\n", curr_command->argv[0], curr_command->argv[1]);
 	return curr_command;
+}
+
+void handle_status(int childStatus) {
+	if(WIFEXITED(childStatus)) {
+		// normal termination
+		printf("exit value %d\n", WEXITSTATUS(childStatus));
+		fflush(stdout);
+	} else if (WIFSIGNALED(childStatus)) {
+		// abnormal termination
+		printf("terminated by signal %d\n", WTERMSIG(childStatus));
+		fflush(stdout);
+	} else {
+		// error
+		printf("error determining exit value\n");
+		fflush(stdout);
+	}
 }
