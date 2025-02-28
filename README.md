@@ -11,10 +11,9 @@ Small Shell
 - Execute 3 commands exit, cd, and status via code built into the shell
 
 ### Implemented but Needs Work:
-
+- Support input and output redirection
 
 ### Needs to be Implemented:
 
-- Support input and output redirection
 - Support running commands in foreground and background processes
 - Implement custom handlers for 2 signals, SIGINT and SIGTSTP

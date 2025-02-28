@@ -21,6 +21,7 @@ Citations:
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 
 #define INPUT_LENGTH     2048
@@ -30,6 +31,8 @@ struct command_line *parse_input();
 int handle_exit(pid_t groupID);
 void handle_status(int childStatus);
 void handle_cd(struct command_line *curr_command);
+void handle_input_redirection(struct command_line *curr_command);
+void handle_output_redirection(struct command_line *curr_command);
 
 struct command_line {
 	char *argv[MAX_ARGS + 1];
@@ -72,6 +75,25 @@ int main() {
 				break;
 			} else if (pid == 0) {
 			// child process executes this
+			// input redirection
+				printf("I AM BEING REACHED: INPUT 1\n");
+				fflush(stdout);
+				printf("input_file = %s\n", curr_command->input_file);
+				if (strcmp(curr_command->input_file, "") != 0 ) {
+					printf("I AM BEING REACHED: INPUT 2\n");
+					fflush(stdout);
+					handle_input_redirection(curr_command);
+				}
+				printf("I AM BEING REACHED: OUTPUT 1\n");
+				fflush(stdout);
+				if (strcmp(curr_command->output_file, "") != 0 ) {
+					printf("I AM BEING REACHED: OUTPUT 2\n");
+					fflush(stdout);
+					handle_output_redirection(curr_command);
+				}
+
+			// output redirection
+
 				execvp(curr_command->argv[0], curr_command->argv);
 				printf("%s: no such command\n", curr_command->argv[0]);
 				fflush(stdout);
@@ -146,4 +168,36 @@ void handle_cd(struct command_line *curr_command) {
 			fflush(stdout);
 		}
 	}
+}
+
+void handle_input_redirection(struct command_line *curr_command) {
+	// handles input redirection
+	printf("I AM BEING REACHED: INPUT");
+	int sourceFD = open(curr_command->input_file, O_RDONLY);
+	if (sourceFD == -1) { 
+		perror("source open()"); 
+		exit(1); 
+	  }
+	int result = dup2(sourceFD, 0);
+  	if (result == -1) { 
+    	perror("source dup2()"); 
+    	exit(2); 
+  	}
+  	close(sourceFD);
+}
+
+void handle_output_redirection(struct command_line *curr_command) {
+	// handles output redirection
+	printf("I AM BEING REACHED: OUTPUT");
+	int targetFD = open(curr_command->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if(targetFD == -1) { 
+		perror("target open()"); 
+		exit(1);
+	}
+	int result = dup2(targetFD, 1);
+	if(result == -1) { 
+		perror("target dup2()");
+		exit(2);
+	}
+	close(targetFD);
 }
