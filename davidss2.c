@@ -162,7 +162,7 @@ void handle_cd(struct command_line *curr_command) {
 
 void handle_input_redirection(struct command_line *curr_command) {
 	// handles input redirection
-	printf("I AM BEING REACHED: INPUT");
+	//printf("I AM BEING REACHED: INPUT");
 	int sourceFD = open(curr_command->input_file, O_RDONLY);
 	if (sourceFD == -1) { 
 		perror("source open()"); 
@@ -178,7 +178,7 @@ void handle_input_redirection(struct command_line *curr_command) {
 
 void handle_output_redirection(struct command_line *curr_command) {
 	// handles output redirection
-	printf("I AM BEING REACHED: OUTPUT");
+	//printf("I AM BEING REACHED: OUTPUT");
 	int targetFD = open(curr_command->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if(targetFD == -1) { 
 		perror("target open()"); 
