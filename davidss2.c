@@ -76,28 +76,18 @@ int main() {
 			} else if (pid == 0) {
 			// child process executes this
 			// input redirection
-				printf("I AM BEING REACHED: INPUT 1\n");
-				fflush(stdout);
-				printf("input_file = %s\n", curr_command->input_file);
-				if (strcmp(curr_command->input_file, "") != 0 ) {
-					printf("I AM BEING REACHED: INPUT 2\n");
-					fflush(stdout);
+				if (curr_command->input_file) {
 					handle_input_redirection(curr_command);
 				}
-				printf("I AM BEING REACHED: OUTPUT 1\n");
-				fflush(stdout);
-				if (strcmp(curr_command->output_file, "") != 0 ) {
-					printf("I AM BEING REACHED: OUTPUT 2\n");
-					fflush(stdout);
+				// output redirection
+				if (curr_command->output_file) {
 					handle_output_redirection(curr_command);
+				} else {
+					execvp(curr_command->argv[0], curr_command->argv);
+					printf("%s: no such command\n", curr_command->argv[0]);
+					fflush(stdout);
+					exit(1);
 				}
-
-			// output redirection
-
-				execvp(curr_command->argv[0], curr_command->argv);
-				printf("%s: no such command\n", curr_command->argv[0]);
-				fflush(stdout);
-				exit(1);
 			} else if (pid > 0) {
 			// parent process executes this
 				waitpid(pid, &childStatus, 0);
