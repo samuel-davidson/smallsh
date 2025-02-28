@@ -173,7 +173,6 @@ void handle_input_redirection(struct command_line *curr_command) {
     	perror("source dup2()"); 
     	exit(2); 
   	}
-  	close(sourceFD);
 }
 
 void handle_output_redirection(struct command_line *curr_command) {
@@ -189,5 +188,4 @@ void handle_output_redirection(struct command_line *curr_command) {
 		perror("target dup2()");
 		exit(2);
 	}
-	close(targetFD);
 }
