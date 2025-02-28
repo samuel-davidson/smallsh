@@ -31,8 +31,8 @@ struct command_line *parse_input();
 int handle_exit(pid_t groupID);
 void handle_status(int childStatus);
 void handle_cd(struct command_line *curr_command);
-void handle_input_redirection(struct command_line *curr_command);
-void handle_output_redirection(struct command_line *curr_command);
+int handle_input_redirection(struct command_line *curr_command);
+int handle_output_redirection(struct command_line *curr_command);
 
 struct command_line {
 	char *argv[MAX_ARGS + 1];
@@ -160,7 +160,7 @@ void handle_cd(struct command_line *curr_command) {
 	}
 }
 
-void handle_input_redirection(struct command_line *curr_command) {
+int handle_input_redirection(struct command_line *curr_command) {
 	// handles input redirection
 	//printf("I AM BEING REACHED: INPUT");
 	int sourceFD = open(curr_command->input_file, O_RDONLY);
@@ -168,14 +168,16 @@ void handle_input_redirection(struct command_line *curr_command) {
 		perror("source open()"); 
 		exit(1); 
 	  }
+	printf("File descriptor of input file = %d\n", sourceFD);  
 	int result = dup2(sourceFD, 0);
   	if (result == -1) { 
     	perror("source dup2()"); 
     	exit(2); 
   	}
+	return 0;
 }
 
-void handle_output_redirection(struct command_line *curr_command) {
+int handle_output_redirection(struct command_line *curr_command) {
 	// handles output redirection
 	//printf("I AM BEING REACHED: OUTPUT");
 	int targetFD = open(curr_command->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -183,9 +185,11 @@ void handle_output_redirection(struct command_line *curr_command) {
 		perror("target open()"); 
 		exit(1);
 	}
+	printf("File descriptor of output file = %d\n", targetFD);
 	int result = dup2(targetFD, 1);
 	if(result == -1) { 
 		perror("target dup2()");
 		exit(2);
 	}
+	return 0;
 }

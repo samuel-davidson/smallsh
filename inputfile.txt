@@ -1,3 +1,2 @@
-shrimps
-lobsters
-oyesters
+: exit value 0
+: 
