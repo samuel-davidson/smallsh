@@ -82,12 +82,11 @@ int main() {
 				// output redirection
 				if (curr_command->output_file) {
 					handle_output_redirection(curr_command);
-				} else {
-					execvp(curr_command->argv[0], curr_command->argv);
-					printf("%s: no such command\n", curr_command->argv[0]);
-					fflush(stdout);
-					exit(1);
 				}
+				execvp(curr_command->argv[0], curr_command->argv);
+				printf("%s: no such command\n", curr_command->argv[0]);
+				fflush(stdout);
+				exit(1);
 			} else if (pid > 0) {
 			// parent process executes this
 				waitpid(pid, &childStatus, 0);
