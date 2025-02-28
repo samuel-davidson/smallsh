@@ -166,8 +166,7 @@ int handle_input_redirection(struct command_line *curr_command) {
 	if (sourceFD == -1) { 
 		perror("source open()"); 
 		exit(1); 
-	  }
-	printf("File descriptor of input file = %d\n", sourceFD);  
+	} 
 	int result = dup2(sourceFD, 0);
   	if (result == -1) { 
     	perror("source dup2()"); 
@@ -184,7 +183,6 @@ int handle_output_redirection(struct command_line *curr_command) {
 		perror("target open()"); 
 		exit(1);
 	}
-	printf("File descriptor of output file = %d\n", targetFD);
 	int result = dup2(targetFD, 1);
 	if(result == -1) { 
 		perror("target dup2()");
