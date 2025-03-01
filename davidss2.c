@@ -2,14 +2,14 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (Lines 38-44, 100-124)
+    (Lines 38-44, 98-122)
 2. Forking and waiting for child process adapted from Module 6,
 	Exploration 3 (Process API - Monitoring Child Processes)
-	(Code example #3). (Lines 69-95)
+	(Code example #3). (Lines 69-93)
 3. Status display adapted from Module 6, Exploration 3 (Process API
-	- Monitoring Child Processes) (Code example #4). (Lines 132-146)
+	- Monitoring Child Processes) (Code example #4). (Lines 130-144)
 4. Input and output redirection adapted from Module 7, Exploration 4 
-	(Processes and I/O) (Code example #3). (Lines 163-177 and 179-193)
+	(Processes and I/O) (Code example #3). (Lines 161-175 and 177-191)
 5.
 6.
 ***************************************************************/
@@ -67,7 +67,6 @@ int main() {
 			// status command
 			handle_status(childStatus);
 		} else {
-			//int childStatus;
 			pid_t pid = fork();
 			if (pid == -1) {
 				perror("fork() failed!"); 
@@ -76,12 +75,11 @@ int main() {
 				break;
 			} else if (pid == 0) {
 			// child process executes this
-				// input redirection
 				if (curr_command->input_file) {
+					// input redirection
 					handle_input_redirection(curr_command);
-				}
-				// output redirection
-				if (curr_command->output_file) {
+				} if (curr_command->output_file) {
+					// output redirection
 					handle_output_redirection(curr_command);
 				}
 				execvp(curr_command->argv[0], curr_command->argv);
