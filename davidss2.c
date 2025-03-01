@@ -2,13 +2,14 @@
 Citations:
 
 1. Command Line parser & struct taken from sample_parser.c
-    (Lines 34-40, 88-112)
+    (Lines 38-44, 100-124)
 2. Forking and waiting for child process adapted from Module 6,
 	Exploration 3 (Process API - Monitoring Child Processes)
-	(Code example #3). (Lines 65-83)
+	(Code example #3). (Lines 69-95)
 3. Status display adapted from Module 6, Exploration 3 (Process API
-	- Monitoring Child Processes) (Code example #4). (Lines 120-134)
-4.
+	- Monitoring Child Processes) (Code example #4). (Lines 132-146)
+4. Input and output redirection adapted from Module 7, Exploration 4 
+	(Processes and I/O) (Code example #3). (Lines 163-177 and 179-193)
 5.
 6.
 ***************************************************************/
@@ -75,7 +76,7 @@ int main() {
 				break;
 			} else if (pid == 0) {
 			// child process executes this
-			// input redirection
+				// input redirection
 				if (curr_command->input_file) {
 					handle_input_redirection(curr_command);
 				}
