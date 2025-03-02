@@ -46,8 +46,21 @@ struct command_line {
 int main() {
 	struct command_line *curr_command;
 	int childStatus;
-
+	int background_procs[64] = {};
+	
 	while(true) {
+		// check BG processes for completion before input
+		for (int i = 0; i < 64; i++){
+			int exitStatus;
+			if (background_procs[i] > 0){
+				if (waitpid(background_procs[i], &exitStatus, WNOHANG) > 0){
+					printf("background pid %d is done: ", background_procs[i]);
+					fflush(stdout);
+					handle_status(exitStatus);
+					background_procs[i] = 0;
+				}
+			}
+		}
 		curr_command = parse_input();
 
 		// HANDLE BUILT IN COMMANDS
@@ -86,9 +99,19 @@ int main() {
 				printf("%s: no such command\n", curr_command->argv[0]);
 				fflush(stdout);
 				exit(1);
-			} else if (pid > 0) {
-			// parent process executes this
+			} if (!curr_command->is_bg){
+				// FG
 				waitpid(pid, &childStatus, 0);
+			} else {
+				// BG
+				printf("background pid is %d\n", pid);
+				fflush(stdout);
+				// add to array to check if completed before next prompt
+				for (int i = 0; i < 64; i++){
+					if (background_procs[i] == 0){
+						background_procs[i] = pid; break;
+					}
+				}
 			}
 		}
 	}
