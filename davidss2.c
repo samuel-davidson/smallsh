@@ -47,7 +47,7 @@ int main() {
 	struct command_line *curr_command;
 	int childStatus;
 	int background_procs[64] = {};
-	
+
 	while(true) {
 		// check BG processes for completion before input
 		for (int i = 0; i < 64; i++){
@@ -91,8 +91,14 @@ int main() {
 				if (curr_command->input_file) {
 					// input redirection
 					handle_input_redirection(curr_command);
+				} else if (curr_command->is_bg) {
+					// background with no input redir
+					handle_input_redirection(curr_command);
 				} if (curr_command->output_file) {
 					// output redirection
+					handle_output_redirection(curr_command);
+				} else if (curr_command->is_bg) {
+					// background with no output redir
 					handle_output_redirection(curr_command);
 				}
 				execvp(curr_command->argv[0], curr_command->argv);
@@ -183,8 +189,12 @@ void handle_cd(struct command_line *curr_command) {
 
 int handle_input_redirection(struct command_line *curr_command) {
 	// handles input redirection
-	//printf("I AM BEING REACHED: INPUT");
-	int sourceFD = open(curr_command->input_file, O_RDONLY);
+	int sourceFD;
+	if (curr_command->is_bg) {
+		sourceFD = open("/dev/null", O_RDONLY);
+	} else {
+		sourceFD = open(curr_command->input_file, O_RDONLY);
+	}
 	if (sourceFD == -1) { 
 		perror("source open()"); 
 		exit(1); 
@@ -199,8 +209,12 @@ int handle_input_redirection(struct command_line *curr_command) {
 
 int handle_output_redirection(struct command_line *curr_command) {
 	// handles output redirection
-	//printf("I AM BEING REACHED: OUTPUT");
-	int targetFD = open(curr_command->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	int targetFD;
+	if (curr_command->is_bg) {
+		targetFD = open("/dev/null", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	} else {
+		targetFD = open(curr_command->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
 	if(targetFD == -1) { 
 		perror("target open()"); 
 		exit(1);
