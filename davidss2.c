@@ -53,11 +53,11 @@ int main() {
 		for (int i = 0; i < 64; i++){
 			int exitStatus;
 			if (background_procs[i] > 0){
-				if (waitpid(background_procs[i], &exitStatus, WNOHANG) > 0){
+				if (waitpid(background_procs[i], &exitStatus, WNOHANG) != 0){
 					printf("background pid %d is done: ", background_procs[i]);
 					fflush(stdout);
-					handle_status(exitStatus);
 					background_procs[i] = 0;
+					handle_status(exitStatus);
 				}
 			}
 		}
