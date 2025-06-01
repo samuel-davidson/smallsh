@@ -1,21 +1,3 @@
-/**************************************************************
-Citations:
-
-1. Command Line parser & struct taken from sample_parser.c
-    (Lines 40-46, 129-153)
-2. Forking and waiting for child process adapted from Module 6,
-	Exploration 3 (Process API - Monitoring Child Processes)
-	(Code example #3). (Lines 84-124)
-3. Status display adapted from Module 6, Exploration 3 (Process API
-	- Monitoring Child Processes) (Code example #4). (Lines 161-175)
-4. Input and output redirection adapted from Module 7, Exploration 4 
-	(Processes and I/O) (Code example #3). (Lines 192-210 and 212-230)
-5. Background process waitpid(...WNOHANG) adapted from Module 6,
-	Exploration 3 (Process API - Monitoring Child Processes) (Code
-	example #3). (Lines 58-59)
-
-***************************************************************/
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
